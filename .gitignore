@@ -4,3 +4,5 @@ dist/
 !.env.example
 .Ds_Store
 *.log
+
+opencode.json

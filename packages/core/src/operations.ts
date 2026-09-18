@@ -8,7 +8,9 @@ import {
   type TelegramMessageOutput,
 } from './schema';
 
-export async function sendTelegramMessage(input: TelegramMessageOptions) : Promise<TelegramMessageOutput> {
+export async function sendTelegramMessage(
+  input: TelegramMessageOptions,
+): Promise<TelegramMessageOutput> {
   const parsedInput = telegramMessageOptionsSchema.parse(input);
   const requestBody = telegramSendMessageRequestSchema.parse({
     chat_id: parsedInput.chatId,
