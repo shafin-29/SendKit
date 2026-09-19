@@ -4,7 +4,6 @@ import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/
 import { telegramMessageInputSchema, sendTelegramMessage } from 'sendkit-core';
 import { createClerkClient } from '@clerk/backend';
 import { generateClerkProtectedResourceMetadata } from '@clerk/mcp-tools/server';
-import { error } from 'console';
 
 const clerkPublishableKey = process.env.CLERK_PUBLISHABLE_KEY;
 const clerkSecretKey = process.env.CLERK_SECRET_KEY;
