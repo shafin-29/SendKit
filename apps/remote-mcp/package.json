@@ -6,9 +6,12 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "start": "bun --env-file=../../.env run src/index.ts"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
-    "@zixxy/sendkit-core": "workspace:*",
+    "@zixxy/sendkit-core": "0.0.0",
     "hono": "^4.13.8"
   }
 }

@@ -12,7 +12,7 @@ if (!clerkPublishableKey) {
   throw new Error("CLERK_PUBLISHABLE_KEY env variable is required");
 }
 if (!clerkSecretKey) {
-  throw new Error("clerkSecretKey env variable is required");
+  throw new Error("CLERK_SECRET_KEY env variable is required");
 }
 
 const clerkClient = createClerkClient({
