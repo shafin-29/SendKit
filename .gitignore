@@ -1,14 +1,8 @@
 node_modules/
-
 dist/
-
 .env
 .env.*
-
 !.env.example
-
 .Ds_Store
-
 *.log
-
 opencode.json
