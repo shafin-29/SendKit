@@ -10,8 +10,5 @@
     "@modelcontextprotocol/sdk": "^1.30.0",
     "sendkit-core": "workspace:*",
     "zod": "^4.6.5"
-  },
-  "devDependencies": {
-    "@types/node": "^26.6.1"
   }
 }

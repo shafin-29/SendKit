@@ -1,18 +1,18 @@
-import { Hono, type Context } from 'hono';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
-import { telegramMessageInputSchema, sendTelegramMessage } from 'sendkit-core';
-import { createClerkClient } from '@clerk/backend';
-import { generateClerkProtectedResourceMetadata } from '@clerk/mcp-tools/server';
+import { Hono, type Context } from "hono";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
+import { telegramMessageInputSchema, sendTelegramMessage } from "sendkit-core";
+import { createClerkClient } from "@clerk/backend";
+import { generateClerkProtectedResourceMetadata } from "@clerk/mcp-tools/server";
 
 const clerkPublishableKey = process.env.CLERK_PUBLISHABLE_KEY;
 const clerkSecretKey = process.env.CLERK_SECRET_KEY;
 
 if (!clerkPublishableKey) {
-  throw new Error('CLERK_PUBLISHABLE_KEY env variable is required');
+  throw new Error("CLERK_PUBLISHABLE_KEY env variable is required");
 }
 if (!clerkSecretKey) {
-  throw new Error('clerkSecretKey env variable is required');
+  throw new Error("clerkSecretKey env variable is required");
 }
 
 const clerkClient = createClerkClient({
@@ -22,15 +22,15 @@ const clerkClient = createClerkClient({
 
 function createServer(botToken: string) {
   const server = new McpServer({
-    name: 'sendkit-remote',
-    version: '0.0.0',
+    name: "sendkit-remote",
+    version: "0.0.0",
   });
 
   server.registerTool(
-    'telegram',
+    "telegram",
     {
-      title: 'Telegram',
-      description: 'Send a Telegram message',
+      title: "Telegram",
+      description: "Send a Telegram message",
       inputSchema: telegramMessageInputSchema.shape,
     },
     async (input) => {
@@ -42,7 +42,7 @@ function createServer(botToken: string) {
       return {
         content: [
           {
-            type: 'text',
+            type: "text",
             text: `Sent Telegram message ${result.messageId} to chat ${result.chatId}`,
           },
         ],
@@ -62,32 +62,32 @@ function protectResourceMetadataUrl(c: Context, botToken: string) {
 
 function unauthorizedMcpResponse(c: Context, botToken: string) {
   c.header(
-    'WWW-Authenticate',
+    "WWW-Authenticate",
     `Bearer resource_metadata="${protectResourceMetadataUrl(c, botToken)}"`,
   );
-  return c.json({ error: 'Unauthorized' }, 401);
+  return c.json({ error: "Unauthorized" }, 401);
 }
 
-app.get('/.well-known/oauth-protected-resource/:botToken/mcp', (c) => {
+app.get("/.well-known/oauth-protected-resource/:botToken/mcp", (c) => {
   return c.json(
     generateClerkProtectedResourceMetadata({
       publishableKey: clerkPublishableKey,
-      resourceUrl: new URL(`/${c.req.param('botToken')}/mcp`, c.req.url).toString(),
+      resourceUrl: new URL(`/${c.req.param("botToken")}/mcp`, c.req.url).toString(),
     }),
   );
 });
 
-app.post('/:botToken/mcp', async (c) => {
-  const botToken = c.req.param('botToken');
-  const authHeader = c.req.header('authorization');
+app.post("/:botToken/mcp", async (c) => {
+  const botToken = c.req.param("botToken");
+  const authHeader = c.req.header("authorization");
 
-  if (!authHeader?.startsWith('Bearer ')) {
+  if (!authHeader?.startsWith("Bearer ")) {
     return unauthorizedMcpResponse(c, botToken);
   }
 
   try {
     const requestState = await clerkClient.authenticateRequest(c.req.raw, {
-      acceptsToken: 'oauth_token',
+      acceptsToken: "oauth_token",
     });
 
     if (!requestState.isAuthenticated) {
@@ -113,7 +113,7 @@ app.post('/:botToken/mcp', async (c) => {
 });
 
 app.notFound((c) => {
-  return c.json({ error: 'Not found' }, 404);
+  return c.json({ error: "Not found" }, 404);
 });
 
 const port = Number(process.env.PORT ?? 3000);
@@ -122,8 +122,8 @@ export default {
   port,
   fetch: (req: Request) => {
     const url = new URL(req.url);
-    url.protocol = req.headers.get('x-forwarded-proto') ?? url.protocol;
-    url.host = req.headers.get('x-forwarded-host') ?? url.host;
+    url.protocol = req.headers.get("x-forwarded-proto") ?? url.protocol;
+    url.host = req.headers.get("x-forwarded-host") ?? url.host;
 
     return app.fetch(new Request(url, req));
   },

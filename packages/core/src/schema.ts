@@ -1,12 +1,12 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const telegramMessageInputSchema = z.object({
-  chatId: z.string().min(1, 'Chat Id is required'),
-  message: z.string().min(1, 'Message is required'),
+  chatId: z.string().min(1, "Chat Id is required"),
+  message: z.string().min(1, "Message is required"),
 });
 
 export const telegramMessageOptionsSchema = telegramMessageInputSchema.extend({
-  botToken: z.string().min(1, 'Telegram bot token is required'),
+  botToken: z.string().min(1, "Telegram bot token is required"),
 });
 
 export const telegramSendMessageRequestSchema = z.object({

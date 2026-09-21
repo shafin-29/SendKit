@@ -1,27 +1,27 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { telegramMessageInputSchema, sendTelegramMessage } from 'sendkit-core';
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { telegramMessageInputSchema, sendTelegramMessage } from "sendkit-core";
 
 const server = new McpServer({
-  name: 'sendkit-local',
-  version: '0.0.0',
+  name: "sendkit-local",
+  version: "0.0.0",
 });
 
 function getTelegramBotToken() {
   const token = process.env.TELEGRAM_BOT_TOKEN;
 
   if (!token) {
-    throw new Error('TELEGRAM_BOT_TOKEN is required. Configure it in your MCP client environment');
+    throw new Error("TELEGRAM_BOT_TOKEN is required. Configure it in your MCP client environment");
   }
 
   return token;
 }
 
 server.registerTool(
-  'telegram',
+  "telegram",
   {
-    title: 'Telegram',
-    description: 'Send a Telegram message',
+    title: "Telegram",
+    description: "Send a Telegram message",
     inputSchema: telegramMessageInputSchema.shape,
   },
   async (input) => {
@@ -33,7 +33,7 @@ server.registerTool(
     return {
       content: [
         {
-          type: 'text',
+          type: "text",
           text: `Sent Telegram message ${result.messageId} to chat ${result.chatId}`,
         },
       ],
