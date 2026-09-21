@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
-    "hono": "^4.13.8",
-    "sendkit-core": "workspace:*"
+    "@zixxy/sendkit-core": "workspace:*",
+    "hono": "^4.13.8"
   }
 }

@@ -1,10 +1,13 @@
 {
-  "name": "sendkit-core",
+  "name": "@zixxy/sendkit-core",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsdown"
   },
   "dependencies": {
     "zod": "^4.6.5"
