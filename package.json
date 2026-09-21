@@ -17,6 +17,9 @@
     "dev:cli": "bun run packages/cli/src/index.ts",
     "dev:local-mcp": "bun run packages/local-mcp/src/index.ts",
     "dev:remote-mcp": "bun run apps/remote-mcp/src/index.ts",
+    "release:pack:core": "bun run --filter @zixxy/sendkit-core pack:dry",
+    "release:pack:cli": "bun run --filter @zixxy/sendkit pack:dry",
+    "release:pack:local-mcp": "bun run --filter @zixxy/sendkit-mcp pack:dry",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
