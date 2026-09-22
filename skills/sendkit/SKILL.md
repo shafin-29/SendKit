@@ -5,22 +5,25 @@ description: Use SendKit to send Telegram messages from agents through the SendK
 
 # SendKit
 
-SendKit is a Telegram messaging toolkit that lets agents send messages through two delivery methods: an **MCP tool** (preferred, zero-config for agents) and a **CLI** (fallback for manual use or environments without MCP support). Both methods use the same delivery engine under the hood, so the message delivery is identical regardless of which path you take.
+SendKit is a Telegram messaging toolkit that lets agents send messages. There are two delivery methods, and you should always try them in this order:
 
-## When to use which workflow
+1. **MCP tool `telegram`** — the preferred path. If this tool is in your available tools, use it. Do not fall back to the CLI.
+2. **CLI (`sendkit`)** — only use this if the MCP tool is confirmed unavailable (i.e., `telegram` does not appear in your tool list).
 
-Pick the right workflow based on your environment:
+Both methods use the same delivery engine, so the message delivery is identical regardless of which path you take.
 
-| Situation                                                  | Workflow                                                           |
-| ---------------------------------------------------------- | ------------------------------------------------------------------ |
-| MCP tool `telegram` is available in your tool list         | **MCP workflow** — call the tool directly                          |
-| No MCP tools available, but shell access exists            | **CLI workflow** — run `sendkit telegram`                          |
-| User asks you to "verify SendKit" or "test the connection" | **Manual verification** — send a test message via either workflow  |
-| User asks to "set up SendKit" or "configure SendKit"       | **Setup** — guide them through configuration for their environment |
+## Decision flow
 
-## MCP workflow (preferred)
+Follow this exact order every time:
 
-When the `telegram` MCP tool is available, call it directly. This is the simplest path — no shell commands needed.
+1. **Check your tool list** for a tool named `telegram`. If it exists → use the **MCP workflow** below. Stop here.
+2. Only if `telegram` is **not** in your tool list → use the **CLI workflow** via shell commands.
+3. If the user asks to "verify SendKit" or "test the connection" → send a test message through whichever workflow is available.
+4. If the user asks to "set up SendKit" or "configure SendKit" → guide them through configuration for their environment.
+
+## MCP workflow (preferred — always try first)
+
+If `telegram` appears in your available tools, call it directly. Do not run shell commands — the MCP tool is simpler, faster, and handles authentication automatically.
 
 ### Tool signature
 
@@ -48,9 +51,11 @@ The MCP server reads `TELEGRAM_BOT_TOKEN` from the environment automatically —
 
 Check whether `telegram` appears in your available tools. If it does, use the MCP workflow. If it doesn't, fall back to the CLI workflow below.
 
-## CLI workflow (fallback)
+## CLI workflow (fallback only)
 
-Use the CLI when MCP tools aren't available but you have shell access. The CLI is the `@zixxy/sendkit` npm package (published as the `sendkit` binary).
+Use the CLI **only** when the `telegram` MCP tool is not in your available tools. The CLI is the `@zixxy/sendkit` npm package (published as the `sendkit` binary).
+
+> **Important:** The MCP server and CLI use **separate** token stores. The MCP server reads `TELEGRAM_BOT_TOKEN` from the process environment (set in your MCP client config). The CLI reads from `~/.config/sendkit/config.json` (set via `sendkit init`). Updating one does **not** update the other.
 
 ### First-time setup
 
